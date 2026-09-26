@@ -22,24 +22,14 @@ def auto_reply(message):
         default_reply = "တောင်းပန်ပါတယ်။ နားမလည်ပါ။\nအောက်ပါစကားလုံးများကိုသာ မေးပါ -\n- ဈေးဘယ်လောက်လဲ\n- လိပ်စာ"
         bot.reply_to(message, default_reply)
 
-# Telegram မှ လှမ်းပို့သော Data များကို လက်ခံမည့် Webhook လမ်းကြောင်း
-@app.route('/' + TOKEN, methods=['POST'])
-def getMessage():
-    json_string = request.get_data().decode('utf-8')
-    update = telebot.types.Update.de_json(json_string)
-    bot.process_new_updates([update])
-    return "!", 200
-
 # Vercel URL နှင့် Telegram ကို ချိတ်ဆက်ပေးမည့် လမ်းကြောင်း
 @app.route('/setwebhook', methods=['GET'])
 def set_webhook():
     bot.remove_webhook()
-    # VERCEL_URL နေရာတွင် မိမိ၏ Vercel Domain အမှန်ကို ပြန်ချိန်းပေးရန် လိုအပ်ပါသည်
-    # ဥပမာ - https://my-tele-bot.vercel.app
     bot.set_webhook(url='https://my-tele-bot-sigma.vercel.app/' + TOKEN)
     return "Webhook Setup Successful!", 200
 
 @app.route('/', methods=['GET'])
 def index():
     return "Bot is running on Vercel!"
-  
+    
