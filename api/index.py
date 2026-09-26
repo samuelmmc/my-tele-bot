@@ -1,7 +1,9 @@
 import os
 import telebot
 from flask import Flask, request    
-TOKEN = os.environ.get('BOT_TOKEN')
+
+# Vercel Environment Variable မဖတ်နိုင်လျှင် တိုက်ရိုက်အလုပ်လုပ်စေရန် Token ထည့်သွင်းခြင်း
+TOKEN = os.environ.get('BOT_TOKEN', '8835826973:AAF4EUwlfX_h2YCkaPjnr_Mxk9H-DiV_Nnk')
 bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
@@ -21,6 +23,14 @@ def auto_reply(message):
     else:
         default_reply = "တောင်းပန်ပါတယ်။ နားမလည်ပါ။\nအောက်ပါစကားလုံးများကိုသာ မေးပါ -\n- ဈေးဘယ်လောက်လဲ\n- လိပ်စာ"
         bot.reply_to(message, default_reply)
+
+# Telegram မှ လှမ်းပို့သော Data များကို လက်ခံမည့် Webhook လမ်းကြောင်း
+@app.route('/' + TOKEN, methods=['POST'])
+def getMessage():
+    json_string = request.get_data().decode('utf-8')
+    update = telebot.types.Update.de_json(json_string)
+    bot.process_new_updates([update])
+    return "!", 200
 
 # Vercel URL နှင့် Telegram ကို ချိတ်ဆက်ပေးမည့် လမ်းကြောင်း
 @app.route('/setwebhook', methods=['GET'])
