@@ -36,7 +36,7 @@ def set_webhook():
     bot.remove_webhook()
     # VERCEL_URL နေရာတွင် မိမိ၏ Vercel Domain အမှန်ကို ပြန်ချိန်းပေးရန် လိုအပ်ပါသည်
     # ဥပမာ - https://my-tele-bot.vercel.app
-    bot.set_webhook(url='my-tele-bot-sigma.vercel.app' + TOKEN)
+    bot.set_webhook(url='https://my-tele-bot-sigma.vercel.app' + TOKEN)
     return "Webhook Setup Successful!", 200
 
 @app.route('/', methods=['GET'])
